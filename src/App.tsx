@@ -1,4 +1,4 @@
-import ManageDivision from "@/Features/Department/Pages/SalarySetup";
+import ManageDivision from "@/Features/Department/Pages/ManageDivision";
 
 function App() {
   return <ManageDivision />;
