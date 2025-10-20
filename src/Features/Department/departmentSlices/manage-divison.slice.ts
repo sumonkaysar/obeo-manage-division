@@ -10,7 +10,7 @@ const initialState: IDivisionState = {
   divisions: divisionsData,
   tableState: {
     globalFilter: "",
-    sorting: [],
+    sorting: [{ desc: false, id: "sl" }],
     rowSelection: {},
     pagination: {
       pageIndex: 0,
