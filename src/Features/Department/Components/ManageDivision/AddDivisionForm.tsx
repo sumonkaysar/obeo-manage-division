@@ -19,9 +19,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { addDivision } from "@/Features/Department/departmentSlices/manage-divison.slice";
-import { divisionZodSchema } from "@/Features/Department/validations/manage-department.validation";
-import { useAppDispatch } from "@/Redux/hook";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  addDivision,
+  selectDivisionData,
+} from "@/Features/Department/departmentSlices/manage-divison.slice";
+import { divisionZodSchema } from "@/Features/Department/validations/manage-division.validation";
+import { useAppDispatch, useAppSelector } from "@/Redux/hook";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { useRef } from "react";
@@ -30,6 +40,7 @@ import type z from "zod";
 
 const AddDivisionForm = () => {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const { departments } = useAppSelector(selectDivisionData);
   const dispatch = useAppDispatch();
   const form = useForm({
     resolver: zodResolver(divisionZodSchema),
@@ -49,6 +60,9 @@ const AddDivisionForm = () => {
           .toString(16)
           .padStart(17, "0"),
         name: data.name,
+        department: data.department,
+        departmentName: departments.find((dept) => dept._id === data.department)
+          ?.name,
       };
 
       dispatch(addDivision(divisionData));
@@ -101,6 +115,39 @@ const AddDivisionForm = () => {
                         </FormControl>
                         <FormDescription className="sr-only">
                           Enter Division Name.
+                        </FormDescription>
+                        <div />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="department"
+                    render={({ field }) => (
+                      <FormItem className="grid grid-cols-[1fr_3fr] gap-4">
+                        <FormLabel className="justify-end text-[#212529]">
+                          Department Name<span className="text-red-500">*</span>
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a department" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {departments.map((dept) => (
+                              <SelectItem key={dept._id} value={dept._id}>
+                                {dept.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormDescription className="sr-only">
+                          Select a Department
                         </FormDescription>
                         <div />
                         <FormMessage />

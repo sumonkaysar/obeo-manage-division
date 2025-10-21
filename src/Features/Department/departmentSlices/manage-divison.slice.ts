@@ -1,3 +1,4 @@
+import { departmentsData } from "@/Features/Department/consts/departments.const";
 import { divisionsData } from "@/Features/Department/consts/manage-division.const";
 import type { ITableState } from "@/Features/Department/types";
 import type { IDivisionState } from "@/Features/Department/types/manage-division.type";
@@ -7,6 +8,7 @@ import type { Updater } from "@tanstack/react-table";
 import { toast } from "sonner";
 
 const initialState: IDivisionState = {
+  departments: departmentsData,
   divisions: divisionsData,
   tableState: {
     globalFilter: "",
